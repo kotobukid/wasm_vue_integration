@@ -1,5 +1,16 @@
 import './assets/main.css'
 
+import init, * as wasm from "./assets/ttr.js";
+
+const run = async () => {
+    await init();   // wasm-pack loads wasm file asynchronously
+    const message = wasm.greet("Alice");
+    console.log(message);
+    console.log(wasm.add(100, 200));
+}
+
+await run();
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
