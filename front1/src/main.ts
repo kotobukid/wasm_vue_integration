@@ -1,25 +1,27 @@
-import './assets/main.css'
+import './assets/main.css';
 
-import init, * as wasm from "./assets/ttr.js";
+import {createApp} from 'vue';
+import {createPinia} from 'pinia';
+
+import App from './App.vue';
+import router from './router';
+
+import init, { greet, add } from "./assets/ttr.js";  // Import functions directly
 
 const run = async () => {
-    await init();   // wasm-pack loads wasm file asynchronously
-    const message = wasm.greet("Alice");
-    console.log(message);
-    console.log(wasm.add(100, 200));
-}
+    await init();  // Await initialization directly in an async function, no need for wrapping it in a promise
+    return { greet, add };  // Return functions directly
+};
 
-await run();
+run().then(({ greet, add }) => {  // Destructure functions from the returned object
+    const message = greet("Alice");
+    console.log(message);  // Should print "hello Alice"
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+    const result = add(100, 200);
+    console.log(result);  // Should print 300
 
-import App from './App.vue'
-import router from './router'
-
-const app = createApp(App)
-
-app.use(createPinia())
-app.use(router)
-
-app.mount('#app')
+    const app = createApp(App);
+    app.use(createPinia());
+    app.use(router);
+    app.mount('#app');
+});
