@@ -10,6 +10,7 @@
             await init();   // wasm-pack loads wasm file asynchronously
             const message = wasm.greet("Alice");
             console.log(message);
+            console.log(wasm.add(100, 200));
         }
 
         run();
