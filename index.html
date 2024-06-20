@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Wasm application</title>
+    <script type="module">
+        import init, * as wasm from "./pkg/ttr.js";
+
+        async function run() {
+            await init();   // wasm-pack loads wasm file asynchronously
+            const message = wasm.greet("Alice");
+            console.log(message);
+        }
+
+        run();
+    </script>
+</head>
+<body>
+
+</body>
+</html>
