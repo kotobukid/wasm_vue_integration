@@ -31,6 +31,11 @@ pub fn calculate_distance(point1: &Point2D, point2: &Point2D) -> f64 {
     (x_delta * x_delta + y_delta * y_delta).sqrt()
 }
 
+#[wasm_bindgen]
+pub fn add_points(point1: &Point2D, point2: &Point2D) -> Point2D {
+    Point2D::new(point1.x + point2.x, point1.y + point2.y)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
