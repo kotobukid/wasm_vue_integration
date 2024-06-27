@@ -11,10 +11,10 @@ let cd: (p1: Point2D, p2: Point2D) => number = (p1: Point2D, p2: Point2D): numbe
   return 0;
 };
 
-const p1: Ref<Point2D> = ref(new Point2D(0, 0));
-const p2: Ref<Point2D> = ref(new Point2D(0, 0));
-
-const my_distance = ref(0);
+// @ts-ignore
+const p1: Ref<Point2D> = ref(null)!;
+// @ts-ignore
+const p2: Ref<Point2D> = ref(null)!;
 
 onMounted(async () => {
   useWasm().then(({greet, Point2D, calculate_distance, add_points}: WasmUtil) => {
@@ -25,9 +25,6 @@ onMounted(async () => {
 
     p1.value = new Point2D(0.0, 0.0);
     p2.value = new Point2D(3.0, 4.0);
-    // const distance = calculate_distance(point1, point2);
-
-    // console.log(distance);
 
     const point3 = add_points(p2.value, p2.value);
     const d13 = calculate_distance(p1.value, point3);
@@ -43,7 +40,6 @@ const create_int = () => {
 const random_calc = () => {
   p1.value = new Point2D(create_int(), create_int());
   p2.value = new Point2D(create_int(), create_int());
-  // my_distance.value = cd(p1.value, p2.value);
 }
 
 const distance = computed(() => {
