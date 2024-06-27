@@ -1,6 +1,6 @@
 import {useWasmStore, type WasmUtil} from "@/stores/wasm";
 
-export {WasmUtil};
+export type {WasmUtil};
 
 export const useWasm = async (): Promise<WasmUtil> => {
     return new Promise(async (resolve) => {

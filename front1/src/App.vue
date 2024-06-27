@@ -7,11 +7,12 @@ import {Point2D} from "@/assets/ttr";
 
 const wasm_loaded = ref(false);
 
-let cd: (p1: Point2D, p2: Point2D) => number = () => {
+let cd: (p1: Point2D, p2: Point2D) => number = (p1: Point2D, p2: Point2D): number => {
+  return 0;
 };
 
-const p1: Ref<Point2D> = ref(null);
-const p2: Ref<Point2D> = ref(null);
+const p1: Ref<Point2D> = ref(new Point2D(0, 0));
+const p2: Ref<Point2D> = ref(new Point2D(0, 0));
 
 const my_distance = ref(0);
 
