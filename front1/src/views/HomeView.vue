@@ -12,7 +12,15 @@ import TheWelcome from '../components/TheWelcome.vue'
       </main>
     </template>
     <template #fallback>
-      準備中
+      <span class="suspended">準備中(Suspense)</span>
     </template>
   </Suspense>
 </template>
+
+<style scoped>
+span.suspended {
+    background-color: orange;
+    color: red;
+    padding: 20px;
+}
+</style>
