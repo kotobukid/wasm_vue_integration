@@ -12,7 +12,7 @@ export const useWasm = async (): Promise<WasmUtil> => {
             add,
             Point2D,
             calculate_distance
-        } = await wasmStore.initialize(2000);
+        } = await wasmStore.initialize(0);
 
         resolve({
             add_points,

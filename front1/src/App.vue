@@ -1,23 +1,53 @@
 <script setup lang="ts">
-import {onMounted} from "vue";
+import {computed, onMounted, ref, type Ref} from "vue";
 import {RouterLink, RouterView} from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import {useWasm, type WasmUtil} from "@/composables/wasm";
+import {Point2D} from "@/assets/ttr";
+
+const wasm_loaded = ref(false);
+
+let cd: (p1: Point2D, p2: Point2D) => number = () => {
+};
+
+const p1: Ref<Point2D> = ref(null);
+const p2: Ref<Point2D> = ref(null);
+
+const my_distance = ref(0);
 
 onMounted(async () => {
   useWasm().then(({greet, Point2D, calculate_distance, add_points}: WasmUtil) => {
+    wasm_loaded.value = true;
+    cd = calculate_distance;
+
     console.log(greet('taro'));
 
-    const point1 = new Point2D(0.0, 0.0);
-    const point2 = new Point2D(3.0, 4.0);
-    const distance = calculate_distance(point1, point2);
+    p1.value = new Point2D(0.0, 0.0);
+    p2.value = new Point2D(3.0, 4.0);
+    // const distance = calculate_distance(point1, point2);
 
-    console.log(distance);
+    // console.log(distance);
 
-    const point3 = add_points(point2, point2);
-    console.log(calculate_distance(point1, point3));
+    const point3 = add_points(p2.value, p2.value);
+    const d13 = calculate_distance(p1.value, point3);
+    console.log(d13);
   });
 });
+
+const create_int = () => {
+  return Math.floor(Math.random() * 400);
+};
+
+
+const random_calc = () => {
+  p1.value = new Point2D(create_int(), create_int());
+  p2.value = new Point2D(create_int(), create_int());
+  // my_distance.value = cd(p1.value, p2.value);
+}
+
+const distance = computed(() => {
+  return cd(p1.value, p2.value).toFixed(5);
+})
 
 </script>
 
@@ -27,6 +57,35 @@ onMounted(async () => {
       <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125"/>
       <div class="wrapper">
         <HelloWorld msg="You did it!"/>
+        <div class="border">
+          <button @click="random_calc">ランダム再生成</button>
+          <br>
+          <table v-if="wasm_loaded">
+            <colgroup>
+              <col style="width: 100px;" />
+              <col style="width: 100px;" />
+            </colgroup>
+            <thead>
+            <tr>
+              <th>X</th>
+              <th>Y</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="right">{{ p1.x }}</td>
+              <td class="right">{{ p1.y }}</td>
+            </tr>
+            <tr>
+              <td class="right">{{ p2.x }}</td>
+              <td class="right">{{ p2.y }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="right">距離: {{ distance }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
         <nav>
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/about">About</RouterLink>
@@ -38,6 +97,38 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.border {
+  border: 1px solid grey;
+  width: 400px;
+  height: 140px;
+  background-color: lightblue;
+}
+
+.right {
+  text-align: right;
+}
+
+
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0 10px 0 10px;
+  border: 1px solid black;
+}
+
+th {
+  background-color: darkgrey;
+  color: white;
+}
+
+td {
+  background-color: white;
+  color: black;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
