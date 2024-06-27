@@ -6,19 +6,24 @@ import {createPinia} from 'pinia';
 import App from './App.vue';
 import router from './router';
 
-import init, { greet, add } from "./assets/ttr.js";  // Import functions directly
+import init, {greet, add, calculate_distance, Point2D} from "./assets/ttr.js";  // Import functions directly
 
 const run = async () => {
     await init();  // Await initialization directly in an async function, no need for wrapping it in a promise
-    return { greet, add };  // Return functions directly
+    return {greet, add, Point2D, calculate_distance};  // Return functions directly
 };
 
-run().then(({ greet, add }) => {  // Destructure functions from the returned object
+run().then(({greet, add, Point2D, calculate_distance}) => {  // Destructure functions from the returned object
     const message = greet("Alice");
     console.log(message);  // Should print "hello Alice"
 
     const result = add(100, 200);
     console.log(result);  // Should print 300
+
+    const point1 = new Point2D(0.0, 0.0);
+    const point2 = new Point2D(3.0, 4.0);
+    const distance = calculate_distance(point1, point2);
+    console.log(distance);
 
     const app = createApp(App);
     app.use(createPinia());
