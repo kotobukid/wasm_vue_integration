@@ -2,42 +2,39 @@
 import {onMounted} from "vue";
 import {RouterLink, RouterView} from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import {useWasm, type WasmUtil} from "@/composables/wasm";
 
-import {useWasmStore} from "./stores/wasm";
+onMounted(async () => {
+  useWasm().then(({greet, Point2D, calculate_distance, add_points}: WasmUtil) => {
+    console.log(greet('taro'));
 
-const {wasm} = useWasmStore();
-const {greet, Point2D, calculate_distance, add_points} = wasm;
+    const point1 = new Point2D(0.0, 0.0);
+    const point2 = new Point2D(3.0, 4.0);
+    const distance = calculate_distance(point1, point2);
 
+    console.log(distance);
 
-onMounted(() => {
-  console.log(greet('taro'));
-
-  const point1 = new Point2D(0.0, 0.0);
-  const point2 = new Point2D(3.0, 4.0);
-  const distance = calculate_distance(point1, point2);
-  console.log(distance);
-
-  const point3 = add_points(point2, point2);
-  console.log(calculate_distance(point1, point3));
+    const point3 = add_points(point2, point2);
+    console.log(calculate_distance(point1, point3));
+  });
 });
 
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125"/>
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!"/>
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView/>
+  <div>
+    <header>
+      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125"/>
+      <div class="wrapper">
+        <HelloWorld msg="You did it!"/>
+        <nav>
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/about">About</RouterLink>
+        </nav>
+      </div>
+    </header>
+    <RouterView/>
+  </div>
 </template>
 
 <style scoped>

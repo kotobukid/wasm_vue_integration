@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import TheWelcome from '../components/TheWelcome.vue'
+
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <Suspense>
+    <template #default>
+      <main>
+        <span>this is home view</span>
+        <TheWelcome/>
+      </main>
+    </template>
+    <template #fallback>
+      準備中
+    </template>
+  </Suspense>
 </template>
